@@ -7,12 +7,14 @@ product                                         /product       ext4    ro,barrie
 vendor                                          /vendor        ext4    ro,barrier=1,discard     wait,logical
 
 # Physical partitions
-/dev/block/bootdevice/by-name/boot              /boot          emmc    defaults                 defaults
-/dev/block/bootdevice/by-name/recovery          /recovery      emmc    defaults                 defaults
-/dev/block/bootdevice/by-name/cache             /cache         ext4    nosuid,nodev,noatime     wait,formattable,check
-/dev/block/bootdevice/by-name/metadata          /metadata      ext4    nosuid,nodev,noatime     wait,formattable,first_stage_mount
-/dev/block/bootdevice/by-name/misc              /misc          emmc    defaults                 defaults
-/dev/block/bootdevice/by-name/dtbo              /dtbo          emmc    defaults                 defaults
+/dev/block/by-name/boot              /boot          emmc    defaults                 defaults
+/dev/block/by-name/recovery          /recovery      emmc    defaults                 defaults
+/dev/block/by-name/cache             /cache         ext4    nosuid,nodev,noatime     wait,formattable,check
+/dev/block/by-name/metadata          /metadata      ext4    nosuid,nodev,noatime     wait,formattable,first_stage_mount
+/dev/block/by-name/misc              /misc          emmc    defaults                 defaults
+/dev/block/by-name/dtbo              /dtbo          emmc    defaults                 defaults
 
 # Userdata
-/dev/block/bootdevice/by-name/userdata          /data          f2fs    nosuid,nodev,noatime     wait,check,formattable,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized+wrappedkey_v0,metadata_encryption=aes-256-xts:wrappedkey_v0,keydirectory=/metadata/vold/metadata_encryption
+/dev/block/by-name/userdata          /data          f2fs    nosuid,nodev,noatime     wait,check,formattable,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized+wrappedkey_v0,metadata_encryption=aes-256-xts:wrappedkey_v0,keydirectory=/metadata/vold/metadata_encryption
+/dev/block/by-name/persist   /mnt/vendor/persist   ext4   ro   wait
+/dev/block/by-name/modem     /vendor/firmware_mnt  vfat   ro   wait

@@ -1,0 +1,20 @@
+on init
+    setprop sys.usb.controller a600000.dwc3
+    setprop sys.usb.configfs 1
+    mkdir /tmp/misc 0700 root root
+    mkdir /tmp/misc/keystore 0700 root root
+
+service foxqseecomd /vendor/bin/qseecomd
+    class core
+    user root
+    group root
+
+service foxkeymaster /vendor/bin/hw/android.hardware.keymaster@4.1-service-qti
+    class core
+    user root
+    group root drmrpc
+
+service foxgatekeeper /vendor/bin/hw/android.hardware.gatekeeper@1.0-service-qti
+    class core
+    user root
+    group root
