@@ -4,10 +4,10 @@ OUT=~/fox_12.1/out/target/product/tucana
 TREE=~/fox_12.1/device/xiaomi/tucana
 REPO=Gursu-Bilisim/tucana-orangefox
 PATCH=$(grep '^PLATFORM_SECURITY_PATCH' "$TREE/BoardConfig.mk" | awk '{print $3}')
-TAG="los23-${PATCH}-$(date +%Y%m%d)${1:+-$1}"
+TAG="v$(date +%Y.%m.%d)${1:+-$1}"
 W=$(mktemp -d)
-cp "$OUT/OrangeFox-R12.0_1_Retrofit-Unofficial-tucana.img" "$W/OrangeFox-tucana-$TAG.img"
-cp "$OUT/OrangeFox-R12.0_1_Retrofit-Unofficial-tucana.zip" "$W/OrangeFox-tucana-$TAG.zip"
+cp "$OUT/OrangeFox-R12.0_1_Retrofit-Unofficial-tucana.img" "$W/OrangeFox-tucana-$TAG-los23-$PATCH.img"
+cp "$OUT/OrangeFox-R12.0_1_Retrofit-Unofficial-tucana.zip" "$W/OrangeFox-tucana-$TAG-los23-$PATCH.zip"
 (cd "$W" && sha256sum *.img *.zip > SHA256SUMS)
 cat > "$W/notes.md" <<NOTES
 OrangeFox R12.0_1 for Xiaomi Mi Note 10 / Mi Note 10 Pro (tucana), retrofit dynamic partitions.
@@ -24,5 +24,5 @@ getprop may show a fake patch level; check the boot image header instead.
 - \`.zip\`: install from a running OrangeFox
 NOTES
 gh release create "$TAG" "$W"/*.img "$W"/*.zip "$W/SHA256SUMS" \
-  --repo "$REPO" --title "OrangeFox tucana — LineageOS 23 ($PATCH)" --notes-file "$W/notes.md"
+  --repo "$REPO" --title "$TAG" --notes-file "$W/notes.md"
 echo "Yayımlandı: $TAG"
