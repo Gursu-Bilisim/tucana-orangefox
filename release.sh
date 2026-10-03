@@ -4,7 +4,7 @@ OUT=~/fox_12.1/out/target/product/tucana
 TREE=~/fox_12.1/device/xiaomi/tucana
 REPO=Gursu-Bilisim/tucana-orangefox
 PATCH=$(grep '^PLATFORM_SECURITY_PATCH' "$TREE/BoardConfig.mk" | awk '{print $3}')
-TAG="los23-${PATCH}-$(date +%Y%m%d)"
+TAG="los23-${PATCH}-$(date +%Y%m%d)${1:+-$1}"
 W=$(mktemp -d)
 cp "$OUT/OrangeFox-R12.0_1_Retrofit-Unofficial-tucana.img" "$W/OrangeFox-tucana-$TAG.img"
 cp "$OUT/OrangeFox-R12.0_1_Retrofit-Unofficial-tucana.zip" "$W/OrangeFox-tucana-$TAG.zip"
