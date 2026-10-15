@@ -22,6 +22,9 @@ getprop may show a fake patch level; check the boot image header instead.
 
 - \`.img\`: fastboot flash recovery
 - \`.zip\`: install from a running OrangeFox
+
+Source: device tree in this repository at tag $TAG; changes to the OrangeFox/TWRP
+recovery source (GPL-3.0-or-later) in \`recovery-patches/\`. Credits: see NOTICE.
 NOTES
 gh release create "$TAG" "$W"/*.img "$W"/*.zip "$W/SHA256SUMS" \
   --repo "$REPO" --title "$TAG" --notes-file "$W/notes.md"

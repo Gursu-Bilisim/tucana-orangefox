@@ -1,0 +1,48 @@
+tucana-orangefox
+Copyright 2026 kgursu (Gursu-Bilisim)
+
+Files written for this repository are licensed under the Apache License,
+Version 2.0 (see LICENSE). This includes patch-check.ps1, recovery-inspect.ps1,
+release.sh, recovery/root/init.recovery.qcom.rc and
+recovery/root/vendor/etc/vintf/manifest.xml, and the decryption, USB, battery
+and display changes made to the build configuration.
+
+This repository builds on the work of others. Their parts keep their own
+authors and licenses:
+
+* Base device tree
+  LIECOTI/tucana-orangefox, commit 8b56b20
+  https://github.com/LIECOTI/tucana-orangefox
+  This repository started as a fork of it. The base tree carries no license
+  statement; files and lines that come from it remain the work of their author.
+
+* QCOM decryption scripts (used at build time, not copied here)
+  TeamWin android_device_qcom_twrp-common, branch android-12.1
+  https://github.com/TeamWin/android_device_qcom_twrp-common
+  Copyright (C) 2020 Captain_Throwback, Apache License 2.0
+
+* recovery/root/init.recovery.usb.rc
+  Based on TeamWin android_device_asus_sm8350-common, branch android-12.1
+  https://github.com/TeamWin/android_device_asus_sm8350-common
+  Copyright (c) 2011-2016, The Linux Foundation. BSD 3-Clause license; the
+  original notice is kept at the top of the file.
+
+* kernel, dtb.img, dtbo.img
+  Prebuilt from the LineageOS 23.2 tucana boot and dtbo images
+  (Linux 4.14.357-openela-perf-ge03e5ba22586). GPL-2.0.
+  Source: https://github.com/LineageOS/android_kernel_xiaomi_sm6150
+  branch lineage-23.2, commit e03e5ba22586be70673afb5d3c3f70510524e658
+
+* recovery/root/system/bin/qseecomd,
+  recovery/root/system/bin/android.hardware.keymaster@4.1-service-qti,
+  recovery/root/system/bin/android.hardware.gatekeeper@1.0-service-qti,
+  recovery/root/vendor/lib64/*, recovery/root/vendor/etc/gpfspath_oem_config.xml
+  Proprietary Qualcomm and Xiaomi vendor files, taken unmodified from the
+  tucana vendor image so that the recovery can reach the device's keymaster.
+  They are not covered by this repository's license; all rights remain with
+  their owners.
+
+* OrangeFox Recovery / TWRP
+  The recovery is built from OrangeFox fox_12.1 (based on TWRP), licensed
+  under GPL-3.0-or-later. Our changes to it are published in recovery-patches/
+  under the same license.

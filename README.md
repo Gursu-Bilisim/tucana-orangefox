@@ -36,7 +36,30 @@ Recovery header: Android 16.0.0, patch 2026-09
 RESULT: match, no rebuild needed
 ```
 
+### recovery-inspect.ps1
+
+Lists what a tucana recovery image contains for FBE v2 + metadata encryption (wrappedkey_v0)
+on Android 16 ROMs: the qseecomd and QTI keymaster/gatekeeper chain, its libraries, the VINTF
+manifest, the `/dev/block/bootdevice` link and the configfs USB setup. Accepts a `recovery.img`
+or an OrangeFox zip. Useful before flashing a build you did not make yourself.
+
+```
+powershell -ExecutionPolicy Bypass -File recovery-inspect.ps1 -Img <recovery.img | OrangeFox zip>
+```
+
 ### release.sh
 
 Publishes the latest build as a GitHub release with SHA-256 checksums. Run it from the device tree
 after committing and pushing. `./release.sh r2` adds a suffix for a second release on the same day.
+
+## Credits and license
+
+This tree started as a fork of [LIECOTI/tucana-orangefox](https://github.com/LIECOTI/tucana-orangefox)
+and uses work from TeamWin, LineageOS and OrangeFox. [NOTICE](NOTICE) lists every source and its license.
+
+- Files written for this repository: Apache License 2.0 ([LICENSE](LICENSE)).
+- Changes to the OrangeFox/TWRP recovery source: GPL-3.0-or-later, published in
+  [recovery-patches/](recovery-patches/).
+- Prebuilt Qualcomm and Xiaomi vendor files: not covered by either license.
+
+If you reuse parts of this tree, keep the NOTICE file and credit the sources it lists.
