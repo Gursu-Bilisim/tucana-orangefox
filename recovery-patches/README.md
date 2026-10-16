@@ -21,7 +21,7 @@ Base revision: see `BASE_REVISION`.
 ## Applying
 
 ```bash
-cd ~/fox_12.1/bootable/recovery
+cd <OrangeFox source tree>/bootable/recovery
 git checkout <base revision>
-git apply /path/to/recovery-patches/bootable_recovery.diff
+git apply <this repository>/recovery-patches/bootable_recovery.diff
 ```
