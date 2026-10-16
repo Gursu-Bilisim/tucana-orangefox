@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
-OUT=~/fox_12.1/out/target/product/tucana
-TREE=~/fox_12.1/device/xiaomi/tucana
+# TREE: <device tree folder>, the folder this script is in (device/xiaomi/tucana).
+# FOX_TREE: <OrangeFox source tree>, three levels above it. Set FOX_TREE to override.
+TREE=$(cd "$(dirname "$0")" && pwd)
+FOX_TREE=${FOX_TREE:-$(cd "$TREE/../../.." && pwd)}
+OUT=$FOX_TREE/out/target/product/tucana
+[ -f "$OUT/OrangeFox-R12.0_1_Retrofit-Unofficial-tucana.img" ] || { echo "No build found in $OUT. Set FOX_TREE=<OrangeFox source tree>." >&2; exit 1; }
 REPO=Gursu-Bilisim/tucana-orangefox
 PATCH=$(grep '^PLATFORM_SECURITY_PATCH' "$TREE/BoardConfig.mk" | awk '{print $3}')
 TAG="v$(date +%Y.%m.%d)${1:+-$1}"

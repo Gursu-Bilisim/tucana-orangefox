@@ -40,3 +40,5 @@ RESULT: match, no rebuild needed
 
 Publishes the latest build as a GitHub release with SHA-256 checksums. Run it from the device tree
 after committing and pushing. `./release.sh r2` adds a suffix for a second release on the same day.
+It looks for the build three folders above the device tree; if your layout differs, run it as
+`FOX_TREE=<OrangeFox source tree> ./release.sh`.
