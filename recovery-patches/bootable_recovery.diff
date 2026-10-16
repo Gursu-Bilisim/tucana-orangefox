@@ -1,0 +1,71 @@
+diff --git a/gui/theme/portrait_hdpi/themes/navbar.xml b/gui/theme/portrait_hdpi/themes/navbar.xml
+index bd964771..1d101faf 100644
+--- a/gui/theme/portrait_hdpi/themes/navbar.xml
++++ b/gui/theme/portrait_hdpi/themes/navbar.xml
+@@ -2,8 +2,8 @@
+ <recovery>
+ 	<variables>
+ 		<variable name="navbar_disable" value="1"/>
+-		<variable name="navbar_disable_add" value="96"/>
+-		<variable name="screen_h" value="%screen_original_h%+96"/>
+-		<variable name="real_gestures_enable" value="1"/>
++		<variable name="navbar_disable_add" value="0"/>
++		<variable name="screen_h" value="%screen_original_h%"/>
++		<variable name="real_gestures_enable" value="0"/>
+ 	</variables>
+ </recovery>
+\ No newline at end of file
+diff --git a/partitionmanager.cpp b/partitionmanager.cpp
+index b52a7d49..5c34886d 100755
+--- a/partitionmanager.cpp
++++ b/partitionmanager.cpp
+@@ -36,6 +36,8 @@
+ #include <zlib.h>
+ #include <iostream>
+ #include <iomanip>
++#include <fstream>
++#include <sstream>
+ #include <sys/wait.h>
+ #include <linux/fs.h>
+ #include <sys/mount.h>
+@@ -507,6 +509,28 @@ clear:
+ 		if (TWFunc::Find_Fstab(Fstab_Filename)) {
+ 			LOGINFO("Fstab: %s\n", Fstab_Filename.c_str());
+ 			TWFunc::copy_file(Fstab_Filename, additional_fstab, 0600, false);
++			{
++				std::ifstream in(additional_fstab);
++				std::stringstream ss;
++				ss << in.rdbuf();
++				in.close();
++				std::string fc = ss.str();
++				const std::string from = "/dev/block/bootdevice/by-name/";
++				const std::string to = "/dev/block/by-name/";
++				size_t fp = 0;
++				bool changed = false;
++				while ((fp = fc.find(from, fp)) != std::string::npos) {
++					fc.replace(fp, from.length(), to);
++					fp += to.length();
++					changed = true;
++				}
++				if (changed) {
++					std::ofstream out(additional_fstab);
++					out << fc;
++					out.close();
++					LOGINFO("Rewrote bootdevice paths in additional fstab\n");
++				}
++			}
+ 			Fstab_Filename = additional_fstab;
+ 			property_set("fstab.additional", "1");
+ 			goto parse;
+@@ -680,6 +704,11 @@ void TWPartitionManager::Decrypt_Data() {
+ 				Mount_By_Path(Decrypt_Data->Key_Directory, false);
+ 		if (!Decrypt_Data->Key_Directory.empty()) {
+ 			Set_Crypto_Type("file");
++			{
++				TWFunc::Exec_Cmd("mkdir -p /mnt/vendor/persist /vendor/firmware_mnt");
++				TWFunc::Exec_Cmd("mount -t ext4 -o ro /dev/block/by-name/persist /mnt/vendor/persist");
++				TWFunc::Exec_Cmd("mount -t vfat -o ro /dev/block/by-name/modem /vendor/firmware_mnt");
++			}
+ #ifdef TW_INCLUDE_FBE_METADATA_DECRYPT
+ #ifdef USE_FSCRYPT
+ 			if (android::vold::fscrypt_mount_metadata_encrypted(Decrypt_Data->Actual_Block_Device, Decrypt_Data->Mount_Point, false, false, Decrypt_Data->Current_File_System, TWFunc::Path_Exists(additional_fstab) ? additional_fstab : "")) {
