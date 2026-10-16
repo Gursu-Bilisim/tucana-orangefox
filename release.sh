@@ -12,7 +12,8 @@ TAG="v$(date +%Y.%m.%d)${1:+-$1}"
 W=$(mktemp -d)
 cp "$OUT/OrangeFox-R12.0_1_Retrofit-Unofficial-tucana.img" "$W/OrangeFox-tucana-$TAG-los23-$PATCH.img"
 cp "$OUT/OrangeFox-R12.0_1_Retrofit-Unofficial-tucana.zip" "$W/OrangeFox-tucana-$TAG-los23-$PATCH.zip"
-(cd "$W" && sha256sum *.img *.zip > SHA256SUMS)
+cp "$TREE/patch-check.ps1" "$TREE/recovery-inspect.ps1" "$W/"
+(cd "$W" && sha256sum *.img *.zip *.ps1 > SHA256SUMS)
 cat > "$W/notes.md" <<NOTES
 OrangeFox R12.0_1 for Xiaomi Mi Note 10 / Mi Note 10 Pro (tucana), retrofit dynamic partitions.
 
@@ -30,6 +31,6 @@ getprop may show a fake patch level; check the boot image header instead.
 Source: device tree in this repository at tag $TAG; changes to the OrangeFox/TWRP
 recovery source (GPL-3.0-or-later) in \`recovery-patches/\`. Credits: see NOTICE.
 NOTES
-gh release create "$TAG" "$W"/*.img "$W"/*.zip "$W/SHA256SUMS" \
+gh release create "$TAG" "$W"/*.img "$W"/*.zip "$W"/*.ps1 "$W/SHA256SUMS" \
   --repo "$REPO" --title "$TAG" --notes-file "$W/notes.md"
 echo "Yayımlandı: $TAG"
