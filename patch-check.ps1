@@ -11,10 +11,13 @@
 # Usage:
 #   powershell -ExecutionPolicy Bypass -File patch-check.ps1 -Zip <ota.zip> [-RecoveryImg <recovery.img>]
 #   powershell -ExecutionPolicy Bypass -File patch-check.ps1 -BootImg <boot.img> [-RecoveryImg <recovery.img>]
-# Optional: -PayloadTool <exe>  -GoDumper <payload-dumper-go.exe, default E:\Mobil\Payload-Dumper-Go>
-#           -MikDir <Multi Image Kitchen folder, default E:\Mobil\MIK>
+# Optional: -PayloadTool <path to a payload tool .exe>
+#           -GoDumper <path to payload-dumper-go.exe>
+#           -MikDir <path to your Multi Image Kitchen folder>
 #           -WorkDir <folder for temporary files>. Only used for A/B (payload.bin) zips;
 #           if omitted there, the script shows the space needed and asks.
+#           Without -PayloadTool, -GoDumper or -MikDir, the script looks for a payload tool
+#           next to itself and in PATH.
 # Supported payload tools: payload-dumper-go (fast, extracts only boot)
 #                          payload_dumper by vm03 (bundled with MIK, extracts all, stopped after boot)
 
@@ -23,8 +26,8 @@ param(
   [string]$BootImg,
   [string]$RecoveryImg,
   [string]$PayloadTool,
-  [string]$GoDumper = 'E:\Mobil\Payload-Dumper-Go\payload-dumper-go.exe',
-  [string]$MikDir = 'E:\Mobil\MIK',
+  [string]$GoDumper,   # <path to payload-dumper-go.exe>
+  [string]$MikDir,     # <path to your Multi Image Kitchen folder>
   [string]$WorkDir = $env:TEMP
 )
 
