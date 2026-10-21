@@ -34,6 +34,12 @@ patch contains the changes made for those devices as well. The three repositorie
   (`res_swap_red_blue()` returns 1), SVG output, tints and shapes swap red and blue (made for
   jackpotlte). tucana uses `RGBX_8888`, where the function returns 0 and the colours do not
   change; the `recovery` binary still needs the new `libminuitwrp.so`.
+- `orangefox.mk`, `data.cpp`, `gui/pages.cpp`: new build variable `OF_SCREEN_BOTTOM_INSET`
+  (pixels, default 0). The theme variables `screen_original_h` and `screen_h` become
+  `OF_SCREEN_H` minus the inset, so the lock-screen swipe, the navigation buttons and the bottom
+  menu move up by that amount. The theme is still scaled to the full `OF_SCREEN_H` (new constant
+  `screen_full_h`), so nothing is stretched. With the default of 0 nothing changes (made for
+  tucana, whose screen curves at the bottom edge).
 - Theme (`gui/theme/portrait_hdpi/themes/navbar.xml`): gesture navigation is off by default
   and the screen height no longer adds 96 px for a hidden navigation bar, which kept the
   bottom menu inside the screen and the lock-screen swipe usable on tucana.

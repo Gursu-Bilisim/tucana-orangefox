@@ -24,6 +24,8 @@ if [ "$TARGET_PRODUCT" = "twrp_tucana" ]; then
 	export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/mapper/vendor"
 	export OF_SCREEN_H=2340
 	export OF_SCREEN_W=1080
+	# curved bottom edge: keep the lock-screen swipe and navigation buttons clear of it
+	export OF_SCREEN_BOTTOM_INSET=60
 
 	# Additional tools
 	export FOX_ENABLE_APP_MANAGER=1
