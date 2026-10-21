@@ -22,6 +22,35 @@ fastboot flash recovery <OrangeFox .img>
 
 Then hold Power + Volume Up. From a running OrangeFox the `.zip` can be installed instead.
 
+## Updating LineageOS from OrangeFox
+
+The LineageOS zip can be installed from OrangeFox (Files, then Install). It does not write the
+recovery partition, so OrangeFox stays in place. Keep the LineageOS developer option
+"Update recovery" off; with it on, the ROM replaces the recovery at boot.
+
+When the new LineageOS build has a new security patch level:
+
+1. Install the ROM zip with the OrangeFox build that matches the current ROM.
+2. Boot the new ROM once.
+3. Flash the OrangeFox build that matches the new patch level, with
+   `fastboot flash recovery <OrangeFox .img>` or from OrangeFox (Flash image) from a USB stick.
+   At this point the older OrangeFox can no longer decrypt `/data`.
+
+Booting the newer OrangeFox while the older ROM is still installed can upgrade the key, after
+which that ROM cannot unlock `/data`.
+
+To copy files to the phone: MTP, or `adb push <file> /sdcard/Download/` once `/data` is
+decrypted. After Format Data `/sdcard` does not exist until the ROM has booted once; use a USB
+stick or `adb push <file> /tmp/` (kept in RAM until reboot).
+
+## USB storage
+
+A USB stick shows up as USB-OTG on the Mount page and as USB Storage in the storage menu of the
+Files tab. FAT32, exFAT (kernel driver) and NTFS (`ntfs-3g`) are mounted. The phone has one USB
+port: while a stick or hub is attached the phone is the USB host, so MTP and ADB are not
+available. Turn MTP off on the Mount page before attaching the stick; with MTP still on, the first
+mount attempt can fail.
+
 ## Known issue: first touch after boot
 
 The first touch after boot is cut short by the touch controller (ST FTS panel): the kernel
