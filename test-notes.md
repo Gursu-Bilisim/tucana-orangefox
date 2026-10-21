@@ -9,7 +9,7 @@ stops until the SHA-256 of the image to be published is recorded here.
 | ROM | lineage-23.2-20261019-NIGHTLY-tucana (Android 16) |
 | Security patch (system / vendor) | 2026-10-01 / 2022-04-01 |
 | Kernel (from the ROM boot.img) | 4.14.357-openela-perf-ge03e5ba22586, built 19 Oct 2026 |
-| Lock screen | pattern |
+| Lock screen | pattern; PIN, password and none in the tests marked so |
 | Image SHA-256 | 29e4fd6165eb4c33c5234ec41815ce5ee2073bc2afa70726b1123f9139f39f91 |
 
 Tests with this image:
@@ -18,6 +18,7 @@ Tests with this image:
 |---|---|---|
 | Decrypt /data | OK | after a tap on the screen, as below |
 | Decrypt /data, no lock screen | OK | decrypted at boot without a prompt |
+| Decrypt /data, PIN and password | OK | lock screen changed in the ROM to a PIN, then to a password; both decrypted in OrangeFox |
 | Clock | OK | before: 22 Aug 1973 (RTC `since_epoch` 114827618). After the pattern the recovery reads the offset from `/data/vendor/time/ats_2` and sets the correct date and time (log: `Fixup_Time: Date and time corrected`). The local time follows the time zone set in OrangeFox |
 | `recovery-inspect.ps1` | OK | all groups OK (PowerShell 7) |
 | `patch-check.ps1` against the ROM boot.img | OK | RESULT: match (PowerShell 7) |
@@ -50,4 +51,4 @@ Known issues:
   on `/data` and can only be read after decryption. Everything after the pattern (backup folder
   names, file dates, logs) uses the correct date.
 
-Not tested: Data backup and restore with user data, PIN and password lock screens, ADB sideload, fastbootd, Magisk.
+Not tested: Data backup and restore with user data, ADB sideload, fastbootd, Magisk.
