@@ -24,7 +24,7 @@ Tests with this image:
 | Status bar, accent colour, bottom menu, lock-screen swipe | OK | the swipe, the navigation buttons and the install console sit 60 px higher than in r2, clear of the curved bottom edge |
 | USB-OTG storage | OK | FAT32, exFAT and NTFS sticks mounted with MTP turned off; with MTP on, the first mount attempt failed. Shown as USB Storage in the Files storage menu |
 | Format Data | OK | Mi Note 10; no `/mnt` warning any more |
-| Zip install from OrangeFox | not tested yet | |
+| Zip install from OrangeFox | OK | LineageOS 20261019 zip installed with an earlier build of this tree (recovery kept). With this image: the OrangeFox zip installed, OrangeFox rebooted into the new recovery and showed its first-start welcome screen after the pattern |
 | Backup and restore | OK for Boot | Boot backed up to an NTFS stick and restored; the partition and the backup file have the same SHA-256. The first boot after the restore stopped in fastboot, the next boot was normal. Data backup not tested (no user data on the test phones) |
 | `recovery-inspect.ps1` | OK | all groups OK (PowerShell 7) |
 | `patch-check.ps1` against the ROM boot.img | OK | RESULT: match (PowerShell 7) |
