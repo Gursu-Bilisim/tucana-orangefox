@@ -47,8 +47,10 @@ source device/xiaomi/tucana/vendorsetup.sh
 rm -f /tmp/tucana/fox_env.sh
 lunch twrp_tucana-eng
 touch bootable/recovery/orangefox.mk
-mka adbd libminuitwrp
-cp out/target/product/tucana/system/lib64/libminuitwrp.so out/target/product/tucana/recovery/root/system/lib64/
+mka adbd libminuitwrp mount.ntfs fsck.ntfs mkfs.ntfs libntfs-3g libfuse-lite
+P=out/target/product/tucana
+cp $P/system/lib64/{libminuitwrp,libntfs-3g,libfuse-lite}.so $P/recovery/root/system/lib64/
+cp $P/system/bin/{mount,fsck,mkfs}.ntfs $P/recovery/root/system/bin/
 mka recoveryimage
 ```
 
@@ -69,7 +71,9 @@ Why the extra lines:
 - `libminuitwrp.so` is copied into the ramdisk by a post-install command that does not run
   again in an incremental build. Since the colour change in `recovery-patches/`, the `recovery`
   binary needs the new library (`res_swap_red_blue`); an old copy keeps the recovery from
-  starting. `recovery-inspect.ps1` checks this in its Display group.
+  starting. `recovery-inspect.ps1` checks this in its Display group. The NTFS tools
+  (`TW_INCLUDE_NTFS_3G`: `mount.ntfs`, `fsck.ntfs`, `mkfs.ntfs`, `libntfs-3g.so`,
+  `libfuse-lite.so`) reach the ramdisk the same way and are copied by hand too.
 
 ### Updating for a new LineageOS build
 

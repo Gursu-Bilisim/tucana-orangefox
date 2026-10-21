@@ -115,3 +115,7 @@ PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_DELAY_TOUCH_INIT_MS := 1000
 TW_USE_LEGACY_BATTERY_SERVICES := true
+
+# NTFS on USB-OTG storage (ntfs-3g over FUSE; the kernel has no NTFS driver).
+# The tools are copied into the ramdisk by hand, see README (Building).
+TW_INCLUDE_NTFS_3G := true
