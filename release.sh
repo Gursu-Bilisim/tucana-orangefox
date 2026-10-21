@@ -25,6 +25,17 @@ if ! git -C "$FOX_TREE/bootable/recovery" diff "$BASE" | cmp -s - "$TREE/recover
 fi
 
 REPO=Gursu-Bilisim/tucana-orangefox
+
+# The release tag must point at the device tree the image was built from. gh creates a missing
+# tag from the default branch, so pass the commit explicitly and require it to be on GitHub.
+HEAD=$(git -C "$TREE" rev-parse HEAD)
+if [ -n "$(git -C "$TREE" status --porcelain --untracked-files=no)" ]; then
+  echo "The device tree has uncommitted changes. Commit and push them first." >&2; exit 1
+fi
+git -C "$TREE" fetch -q origin || { echo "git fetch failed." >&2; exit 1; }
+if [ -z "$(git -C "$TREE" branch -r --contains "$HEAD")" ]; then
+  echo "Commit $HEAD is not on GitHub. Push it first." >&2; exit 1
+fi
 PATCH=$(grep -E '^PLATFORM_SECURITY_PATCH[[:space:]]*:=' "$TREE/BoardConfig.mk" | awk '{print $3}')
 VPATCH=$(grep -E '^VENDOR_SECURITY_PATCH[[:space:]]*:=' "$TREE/BoardConfig.mk" | awk '{print $3}')
 PV=$(grep -E '^PLATFORM_VERSION[[:space:]]*:=' "$TREE/BoardConfig.mk" | awk '{print $3}')
@@ -69,5 +80,5 @@ NOTES
 cat "$TREE/test-notes.md"
 } > "$W/notes.md"
 gh release create "$TAG" "$W"/*.img "$W"/*.zip "$W"/*.ps1 "$W/TEST-NOTES.md" "$W/SHA256SUMS" \
-  --repo "$REPO" --title "$TAG" --notes-file "$W/notes.md"
+  --repo "$REPO" --target "$HEAD" --title "$TAG" --notes-file "$W/notes.md"
 echo "Published: $TAG"
