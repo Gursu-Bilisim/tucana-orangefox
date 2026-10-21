@@ -3,7 +3,7 @@ Copyright 2026 kgursu (Gursu-Bilisim)
 
 Files written for this repository are licensed under the Apache License,
 Version 2.0 (see LICENSE). This includes patch-check.ps1, recovery-inspect.ps1,
-release.sh, recovery/root/init.recovery.qcom.rc and
+release.sh, test-notes.md, recovery/root/init.recovery.qcom.rc and
 recovery/root/vendor/etc/vintf/manifest.xml, and the decryption, USB, battery
 and display changes made to the build configuration.
 
@@ -45,4 +45,6 @@ authors and licenses:
 * OrangeFox Recovery / TWRP
   The recovery is built from OrangeFox fox_12.1 (based on TWRP), licensed
   under GPL-3.0-or-later. Our changes to it are published in recovery-patches/
-  under the same license.
+  under the same license. The same source tree also builds the bramble and
+  jackpotlte recoveries of Gursu-Bilisim, so the patch includes the changes
+  made for those devices.
