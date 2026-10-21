@@ -17,6 +17,7 @@ Tests with this image:
 | Test | Result | Notes |
 |---|---|---|
 | Decrypt /data | OK | after a tap on the screen, as below |
+| Decrypt /data, no lock screen | OK | decrypted at boot without a prompt |
 | Clock | OK | before: 22 Aug 1973 (RTC `since_epoch` 114827618). After the pattern the recovery reads the offset from `/data/vendor/time/ats_2` and sets the correct date and time (log: `Fixup_Time: Date and time corrected`). The local time follows the time zone set in OrangeFox |
 | `recovery-inspect.ps1` | OK | all groups OK (PowerShell 7) |
 | `patch-check.ps1` against the ROM boot.img | OK | RESULT: match (PowerShell 7) |
@@ -49,4 +50,4 @@ Known issues:
   on `/data` and can only be read after decryption. Everything after the pattern (backup folder
   names, file dates, logs) uses the correct date.
 
-Not tested: Data backup and restore with user data, adopted storage, OTA (incremental) packages.
+Not tested: Data backup and restore with user data, PIN and password lock screens, ADB sideload, fastbootd, Magisk.
