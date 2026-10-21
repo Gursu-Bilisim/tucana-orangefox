@@ -119,3 +119,6 @@ TW_USE_LEGACY_BATTERY_SERVICES := true
 # NTFS on USB-OTG storage (ntfs-3g over FUSE; the kernel has no NTFS driver).
 # The tools are copied into the ramdisk by hand, see README (Building).
 TW_INCLUDE_NTFS_3G := true
+
+# Qualcomm RTC: set the clock from the time_daemon offset in /data/vendor/time/ats_*
+TARGET_RECOVERY_QCOM_RTC_FIX := true
