@@ -40,6 +40,10 @@ patch contains the changes made for those devices as well. The three repositorie
   menu move up by that amount. The theme is still scaled to the full `OF_SCREEN_H` (new constant
   `screen_full_h`), so nothing is stretched. With the default of 0 nothing changes (made for
   tucana, whose screen curves at the bottom edge).
+- Theme (`pages/templates/templates.xml`, `resources/vars.xml`): the "show password" eye icon on
+  the decrypt page only reacted to touches on its 64x46 px image. An invisible 144x144 px button
+  centred on the icon (`pass_show_touch_x`, `pass_show_touch_y`) now does the same (made for
+  tucana, where touches 2 to 50 px below the icon were missed on both test phones).
 - Theme (`gui/theme/portrait_hdpi/themes/navbar.xml`): gesture navigation is off by default
   and the screen height no longer adds 96 px for a hidden navigation bar, which kept the
   bottom menu inside the screen and the lock-screen swipe usable on tucana.
