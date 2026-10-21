@@ -16,5 +16,3 @@ vendor                                          /vendor        ext4    ro,barrie
 
 # Userdata
 /dev/block/by-name/userdata          /data          f2fs    nosuid,nodev,noatime     wait,check,formattable,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized+wrappedkey_v0,metadata_encryption=aes-256-xts:wrappedkey_v0,keydirectory=/metadata/vold/metadata_encryption
-/dev/block/by-name/persist   /mnt/vendor/persist   ext4   ro   wait
-/dev/block/by-name/modem     /vendor/firmware_mnt  vfat   ro   wait
