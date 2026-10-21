@@ -80,7 +80,7 @@ mka adbd libminuitwrp mount.ntfs fsck.ntfs mkfs.ntfs libntfs-3g libfuse-lite
 P=out/target/product/tucana
 cp $P/system/lib64/{libminuitwrp,libntfs-3g,libfuse-lite}.so $P/recovery/root/system/lib64/
 cp $P/system/bin/{mount,fsck,mkfs}.ntfs $P/recovery/root/system/bin/
-rm -f $P/recovery.img $P/ramdisk-recovery.img
+rm -f $P/recovery.img $P/ramdisk-recovery.img $P/ramdisk-recovery.cpio
 mka recoveryimage
 ```
 
@@ -106,7 +106,8 @@ Why the extra lines:
   `libfuse-lite.so`) reach the ramdisk the same way and are copied by hand too.
 - The theme is copied into `recovery/root/twres`, but the ramdisk and the image do not depend on
   those files: after a change to theme files only, `mka recoveryimage` keeps the old image.
-  Deleting `recovery.img` and `ramdisk-recovery.img` makes it rebuild both.
+  Deleting `recovery.img`, `ramdisk-recovery.img` and the uncompressed `ramdisk-recovery.cpio`
+  makes it rebuild all three; without the `.cpio` the old ramdisk is compressed again.
 
 ### Updating for a new LineageOS build
 
