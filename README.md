@@ -90,8 +90,9 @@ Other ways to copy: MTP (the phone's `Download` folder in Windows Explorer), or 
 ### Step 2: patch the new boot.img (root only)
 
 The root manager patches a file; it does not need to run on the new system. On the test phones
-FolkPatch patched the 20261026 `boot.img` while 20261019 was still running: Install,
-`KernelPatch Patching/Installing`, `Select a boot image to patch`, then `Download/boot.img`.
+FolkPatch patched the 20261026 `boot.img` while 20261019 was still running. The first icon, a
+magic wand, opens the `Install` page; there choose `KernelPatch Patching/Installing`,
+`Select a boot image to patch`, then `Download/boot.img`.
 
 <img src="docs/update/folkpatch-install-menu.jpg" width="240" alt="FolkPatch Install page: KernelPatch Patching/Installing with Select a boot image to patch, Use local patch file (KPimg), Patch and install">
 
