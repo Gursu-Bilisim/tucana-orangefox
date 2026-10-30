@@ -127,6 +127,10 @@ Checks whether a recovery image fits a ROM build before you flash it. For a tuca
 `recovery.img` the verdict comes from the image header: Android version and security patch must
 match the ROM's `boot.img`. The kernel version is shown for information; a kernel difference
 does not block decryption on tucana.
+The `ROM fstab` and `Recovery fstab` lines show the `/data` entry of both images: fscrypt
+policy and whether metadata encryption is used. On tucana both read
+`v2+inlinecrypt_optimized+wrappedkey_v0` with metadata encryption; if the fscrypt versions
+differ, the image cannot decrypt `/data` on that ROM.
 
 ```
 powershell -ExecutionPolicy Bypass -File patch-check.ps1 -BootImg <boot.img> -RecoveryImg <OrangeFox .img | .zip>
