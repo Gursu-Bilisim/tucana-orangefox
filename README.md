@@ -13,6 +13,9 @@ dynamic partitions, for LineageOS. Installed to the recovery partition.
   image header instead.
 - The tucana bootloader does not act on `fastboot reboot recovery`. After flashing, hold
   Power + Volume Up to boot into recovery.
+- Do not use Fix Contexts or other functions that relabel `/data`. The recovery's Android 12
+  SELinux library does not know the per-user levels of newer Android versions; this is why the
+  automatic `restorecon` in vold was removed (see [recovery-patches/](recovery-patches/README.md)).
 
 ## Installing
 
@@ -223,7 +226,8 @@ configure the same reset and interrupt pins differently), not in OrangeFox.
 
 1. Sync OrangeFox `fox_12.1` (see the OrangeFox wiki) into `<OrangeFox source tree>`.
 2. Clone this repository to `<OrangeFox source tree>/device/xiaomi/tucana`.
-3. Apply [recovery-patches/](recovery-patches/README.md) to `bootable/recovery`.
+3. Apply the two patches in [recovery-patches/](recovery-patches/README.md) (`bootable/recovery`
+   and `system/vold`).
 4. Build:
 
 ```bash
@@ -315,8 +319,8 @@ powershell -ExecutionPolicy Bypass -File recovery-inspect.ps1 -Img <OrangeFox .i
 
 Publishes the latest build as a GitHub release: image, zip, both scripts, `TEST-NOTES.md` and
 `SHA256SUMS`. It stops if `test-notes.md` is older than the image, if the image's SHA-256 is not
-recorded in `test-notes.md`, or if `bootable/recovery` no longer matches
-`recovery-patches/bootable_recovery.diff`. `./release.sh r2` adds a suffix for a second release
+recorded in `test-notes.md`, or if `bootable/recovery` or `system/vold` no longer match the
+diffs in `recovery-patches/`. `./release.sh r2` adds a suffix for a second release
 on the same day; `FOX_TREE=<OrangeFox source tree> ./release.sh` if the build is not three
 folders above the device tree.
 
@@ -326,7 +330,7 @@ This tree started as a fork of [LIECOTI/tucana-orangefox](https://github.com/LIE
 and uses work from TeamWin, LineageOS and OrangeFox. [NOTICE](NOTICE) lists every source and its license.
 
 - Files written for this repository: Apache License 2.0 ([LICENSE](LICENSE)).
-- Changes to the OrangeFox/TWRP recovery source: GPL-3.0-or-later, published in
+- Changes to OrangeFox/TWRP: GPL-3.0-or-later; changes to vold: Apache License 2.0; both in
   [recovery-patches/](recovery-patches/).
 - Prebuilt Qualcomm and Xiaomi vendor files: not covered by either license.
 

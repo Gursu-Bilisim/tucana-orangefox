@@ -18,11 +18,12 @@ SUM=$(sha256sum "$IMG" | cut -d' ' -f1)
 grep -q "$SUM" "$TREE/test-notes.md" || {
   echo "The SHA-256 of $(basename "$IMG") ($SUM) is not in test-notes.md. Test this build and record its hash first." >&2; exit 1; }
 
-# The recovery is built from OrangeFox bootable/recovery with recovery-patches/bootable_recovery.diff.
-BASE=$(awk '/^bootable_recovery.diff/{f=1} f&&/^commit:/{print $2; exit}' "$TREE/recovery-patches/BASE_REVISION")
-if ! git -C "$FOX_TREE/bootable/recovery" diff "$BASE" | cmp -s - "$TREE/recovery-patches/bootable_recovery.diff"; then
-  echo "bootable/recovery differs from recovery-patches/bootable_recovery.diff. Regenerate the patch, commit it and push." >&2; exit 1
-fi
+# The recovery is built with recovery-patches/bootable_recovery.diff and recovery-patches/system_vold.diff applied.
+base() { awk -v f="$1" '$0==f{s=1} s&&/^commit:/{print $2; exit}' "$TREE/recovery-patches/BASE_REVISION"; }
+git -C "$FOX_TREE/bootable/recovery" diff "$(base bootable_recovery.diff)" | cmp -s - "$TREE/recovery-patches/bootable_recovery.diff" \
+  || { echo "bootable/recovery differs from recovery-patches/bootable_recovery.diff. Regenerate the patch, commit it and push." >&2; exit 1; }
+git -C "$FOX_TREE/system/vold" diff "$(base system_vold.diff)" | cmp -s - "$TREE/recovery-patches/system_vold.diff" \
+  || { echo "system/vold differs from recovery-patches/system_vold.diff. Regenerate the patch, commit it and push." >&2; exit 1; }
 
 REPO=Gursu-Bilisim/tucana-orangefox
 
@@ -74,7 +75,7 @@ boot image header instead.
 - \`recovery-inspect.ps1 -Img <img or zip>\`
 
 Source: device tree in this repository at tag $TAG; changes to the OrangeFox/TWRP recovery
-source (GPL-3.0-or-later) in \`recovery-patches/\`. Credits: see NOTICE.
+source (GPL-3.0-or-later) and to vold (Apache-2.0) in \`recovery-patches/\`. Credits: see NOTICE.
 
 NOTES
 cat "$TREE/test-notes.md"

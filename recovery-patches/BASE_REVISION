@@ -5,3 +5,11 @@ date:       Sun Sep 20 16:19:29 2026 +0100
 subject:    Turn warning into error
 branch:     fox_12.1
 path:       bootable/recovery
+
+system_vold.diff
+repository: https://github.com/TeamWin/android_system_vold
+commit:     a164ba05c5fef288059774a776b2e6e1119957cf
+date:       Sat Feb 22 19:47:29 2025 +0000
+subject:    Merge "vold: KeystoreInfo: Close /data/system/locksettings.db before exiting function Fixes the issue where the /data partition is in use during formatting/unmounting in some rare cases" into android-12.1
+branch:     android-12.1
+path:       system/vold
