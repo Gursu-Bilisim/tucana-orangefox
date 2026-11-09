@@ -6,13 +6,37 @@ stops until the SHA-256 of the image to be published is recorded here.
 | Item | Value |
 |---|---|
 | Device | Mi Note 10 and Mi Note 10 Pro, tucana |
-| ROM | lineage-23.2-20261019-NIGHTLY-tucana (Android 16) |
+| ROM | lineage-23.2-20261026-NIGHTLY-tucana (Android 16) |
 | Security patch (system / vendor) | 2026-10-01 / 2022-04-01 |
-| Kernel (from the ROM boot.img) | 4.14.357-openela-perf-ge03e5ba22586, built 19 Oct 2026 |
-| Lock screen | pattern; PIN, password and none in the tests marked so |
-| Image SHA-256 | 8a2549d31a2834e4151a1f0b7accbde479e5d43c9ea48ec5670658ea7be00fca |
+| Kernel (from the ROM boot.img) | 4.14.357-openela-perf-ge03e5ba22586, built 26 Oct 2026 |
+| Lock screen | pattern |
+| Image SHA-256 | 49597d6ed1fc4572e59e42329db5d1e653911130b51c76a5a5c51154aa1ad18f |
 
-Tests with this image:
+Tests with this image (9 November 2026, both phones, flashed with `fastboot flash recovery`):
+
+| Test | Result | Notes |
+|---|---|---|
+| Decrypt /data, pattern | OK | after a tap on the screen; `User 0 Decrypted Successfully` in `recovery.log` (Mi Note 10 Pro) |
+| `checkin` label after decrypting in the recovery | OK | `/data/misc_ce/0/checkin` kept `u:object_r:checkin_data_file:s0:c512,c768` in OrangeFox after the pattern and in Android afterwards; `sys.user.0.ce_available` `true`; no `Relabelling`, `Failed to prepare user` or `vold_prepare` denial in logcat. Before, the recovery relabelled the directory to `s0` (see README) |
+| persist mount | OK | `/dev/block/by-name/persist` mounted read-only at `/mnt/vendor/persist`; no `ERROR` line in `recovery.log` (Mi Note 10 Pro) |
+| `recovery-inspect.ps1` 2026.11.09 | OK | all groups OK (PowerShell 7.6.9) |
+| `patch-check.ps1 -Zip` with the 20261026 zip | OK | RESULT: match, no rebuild needed (PowerShell 7.6.9) |
+
+What changed from v2026.10.21-r3: the shared `system/vold` patch (no `restorecon` over `misc_ce`
+after the CE key is installed), the persist mount check, and the minuitwrp changes made for
+gts7xlwifi (see `recovery-patches/README.md`). The device tree is unchanged.
+
+Earlier builds of this tree and how they differ from this image:
+
+- v2026.10.21-r3 (SHA-256 8a2549d31a2834e4151a1f0b7accbde479e5d43c9ea48ec5670658ea7be00fca): every
+  session that decrypted the user's storage relabelled `/data/misc_ce/0/checkin` to `s0`; persist was mounted
+  without the check.
+- v2026.10.21-r2 (SHA-256 29e4fd6165eb4c33c5234ec41815ce5ee2073bc2afa70726b1123f9139f39f91): in addition,
+  the show-password touch area is missing.
+- v2026.10.21 (SHA-256 c33c7c30c14928a89443319198ce4f5f7bb1a85592f0c3a473ab87f94a4ed59b): in addition,
+  `TARGET_RECOVERY_QCOM_RTC_FIX` is missing.
+
+Tests with v2026.10.21-r3:
 
 | Test | Result | Notes |
 |---|---|---|
@@ -20,13 +44,6 @@ Tests with this image:
 | Show-password icon on the decrypt page | OK | reacts to touches about half a fingertip above and below the icon (new 144x144 px touch area); before, only touches on the 64x46 px image itself |
 | `recovery-inspect.ps1` | OK | all groups OK (PowerShell 7) |
 | `patch-check.ps1` against the ROM boot.img | OK | RESULT: match (PowerShell 7) |
-
-Earlier builds of this tree and how they differ from this image:
-
-- v2026.10.21-r2 (SHA-256 29e4fd6165eb4c33c5234ec41815ce5ee2073bc2afa70726b1123f9139f39f91): only the
-  show-password touch area is missing.
-- v2026.10.21 (SHA-256 c33c7c30c14928a89443319198ce4f5f7bb1a85592f0c3a473ab87f94a4ed59b): in addition,
-  `TARGET_RECOVERY_QCOM_RTC_FIX` is missing.
 
 Tests with v2026.10.21-r2 and with a test build whose ramdisk is identical to it:
 
@@ -61,8 +78,8 @@ Known issues:
   but `fastbootd` never opens its USB function, so the computer does not see the phone
   (`fastboot devices` is empty, nothing appears in the Windows Device Manager). The bootloader's
   fastboot is not affected.
-- The first touch after boot is cut short by the touch controller (FTS panel); see README. This
-  build still shows it on both phones, with the kernel of the 20261019 LineageOS build.
+- The first touch after boot is cut short by the touch controller (FTS panel); see README. The
+  tests above tapped the screen once before the pattern.
 - On the lock screen, before the pattern, the clock still shows 1973: the time offset is stored
   on `/data` and can only be read after decryption. Everything after the pattern (backup folder
   names, file dates, logs) uses the correct date.

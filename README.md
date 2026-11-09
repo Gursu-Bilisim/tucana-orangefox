@@ -17,6 +17,30 @@ dynamic partitions, for LineageOS. Installed to the recovery partition.
   SELinux library does not know the per-user levels of newer Android versions; this is why the
   automatic `restorecon` in vold was removed (see [recovery-patches/](recovery-patches/README.md)).
 
+## Apps cannot create their Android/data folder
+
+Before v2026.11.09, every OrangeFox session that decrypted the user's storage relabelled
+`/data/misc_ce/0/checkin` to `u:object_r:checkin_data_file:s0`. On the next boot LineageOS 23.2
+could not prepare the user's credential-encrypted storage: `sys.user.0.ce_available` stays empty,
+apps cannot create `/storage/emulated/0/Android/data/<package>` (`getExternalFilesDir()` returns
+null) and some crash at start. The log shows `avc: denied { relabelfrom } ... name="checkin"`.
+v2026.11.09 no longer relabels the directory (see [recovery-patches/](recovery-patches/README.md)),
+but a label changed by an earlier version stays. Check it in Android with root:
+
+```
+adb shell su -c "ls -ldZ /data/misc_ce/0/checkin; getprop sys.user.0.ce_available"
+```
+
+If the label ends in `:s0` instead of `:s0:c512,c768`, set it once and restart:
+
+```
+adb shell su -c "chcon u:object_r:checkin_data_file:s0:c512,c768 /data/misc_ce/0/checkin"
+```
+
+After the restart and unlocking, the same check shows `s0:c512,c768` and `true`. Apps whose
+first start failed may need their data cleared once. Do not use `resetprop` on
+`sys.user.0.ce_available`: it hides the symptom while the storage stays unprepared.
+
 ## Installing
 
 ```
